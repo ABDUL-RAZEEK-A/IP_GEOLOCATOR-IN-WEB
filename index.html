@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Geolocation Tool</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eff1f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display:center;
+            background:#7fd8be; 
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px); /* Smooth blur effect behind */
+            transition: transform 0.3s ease;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ff7f50;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="text"] {
+            padding: 15px;
+            font-size: 1.1rem;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            background-color: #f9f9f9;
+            color: #ff7f50;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus {
+            border-color: #4CAF50;  /* Green */
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);  /* Green glow */
+        }
+
+        button {
+            padding: 14px 28px;
+            font-size: 1.2rem;
+            background-color: #009688;  /* Teal */
+            color: #fcefef;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+.mydiv{
+    text-align:'center';
+}
+
+        button:hover {
+            background-color: #00796b;  /* Darker Teal */
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 121, 102, 0.5); /* Button hover shadow */
+        }
+
+        button:active {
+            transform: translateY(2px); /* Button click effect */
+        }
+
+        /* Hover effect for container */
+        .container:hover {
+            transform: translateY(-10px); /* Slight upward hover effect */
+        }
+
+        /* Accent Border for the Container */
+        .container {
+            border: 2px solid #2196F3;  /* Light Blue */
+        }
+
+        /* Success or Error Message Box Styles */
+        .message-box {
+            display: none;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        .success {
+            background-color: #d4edda;  /* Light Green */
+            color: #155724;  /* Dark Green */
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;  /* Light Red */
+            color: #721c24;  /* Dark Red */
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            input[type="text"] {
+                font-size: 1rem;
+                width: 80%;
+            }
+
+            button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body >
+
+
+    <div class="container">
+<h1>IP GEOLOCATOR</h1>
+        <h2>IP Geolocation Tool</h2>
+        <h4>Conditions</h4>
+<ul>
+<li>This is a basic ip geolocator where you canprovide the ip and to check the necessary details of the ip </li>
+<li>This supports the IP version 4 <b>ipv4</b> and IP version 6 <b>ipv6</b> also</li>
+<li>You must agree to the terms and conditions</li>
+<li>Please read the terms and contion and the privacy policy in it </li>
+</ul>
+<br>
+        <!-- Form for user to enter the IP address -->
+        <form id="ipForm" onsubmit="getIpDetails(event)">
+            <input type="text" id="ip" placeholder="Enter IP Address" required>
+            <button type="submit">Get IP Details</button>
+<br>
+<div class='mydiv'>
+           <input id="checkbox" type="checkbox" name='cb'  required>
+          <label for='cb'>I Agree to the <a href="terms.html">Terms & Conditions</a></label>
+</div>
+        </form>
+
+        <!-- Message box (success/error) will appear dynamically -->
+        <div class="message-box success" id="messageBoxSuccess">IP details fetching ..... !</div>
+        <div class="message-box error" id="messageBoxError">Failed to retrieve IP details. Try again!</div>
+    </div>
+
+    <script>
+        // Function to handle form submission and redirect to result.html with the IP
+        function getIpDetails(event) {
+            event.preventDefault(); // Prevent form from submitting traditionally
+
+            const ip = document.getElementById("ip").value; // Get the entered IP address
+            const resultPage = "result.html"; // Result page to display data
+
+            // Display a message based on success or failure
+            const messageSuccess = document.getElementById("messageBoxSuccess");
+            const messageError = document.getElementById("messageBoxError");
+
+            // Simulate a success or failure (you can replace this with actual validation or API call)
+            if (ip) {
+                messageSuccess.style.display = "block";
+                messageError.style.display = "none";
+                // Redirect to result page
+                setTimeout(() => {
+                    window.location.href = `${resultPage}?ip=${ip}`;
+                }, 1500); // Wait 1.5 seconds before redirecting
+            } else {
+                messageError.style.display = "block";
+                messageSuccess.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

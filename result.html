@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Geolocation Result</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #eff1f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 700px;
+            background-color:#7fd8be;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px); /* Smooth blur effect behind */
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #1e3d58;  /* Deep Blue */
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Result details styles */
+        .result {
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .result b {
+            color: #009688;  /* Teal */
+            font-weight: 600;
+        }
+
+        .result p {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        /* Back button */
+        .back-button {
+            display: block;
+            width: 150px;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 20px auto;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-button:hover {
+            background-color: #45a049; /* Darker Green */
+            transform: translateY(-2px); /* Slight lifting effect */
+        }
+
+        .back-button:active {
+            transform: translateY(2px); /* Button press effect */
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IP GEOLOCATOR</h1>
+        <h2>IP Geolocation Details</h2>
+        <div id="ipDetails">Loading...</div> <!-- Container to show the result -->
+
+        <a href="index.html" class="back-button">Back to Home</a>
+    </div>
+
+    <script>
+        // Function to fetch IP details and display them on the page
+        async function fetchIpDetails() {
+            // Get the IP from the URL query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const ip = urlParams.get('ip'); // Extract the 'ip' parameter from the URL
+
+            if (!ip) {
+                document.getElementById("ipDetails").innerHTML = "No IP address provided.";
+                return;
+            }
+
+            // API endpoint to fetch IP geolocation details
+            const apiUrl = `https://ipinfo.io/${ip}/json`;
+
+            try {
+                // Fetch data from ipinfo.io API
+                const response = await fetch(apiUrl);
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Display the result in the HTML
+                    const ipDetails = `
+                        <div class="result">
+                            <p><b>IP Address:</b> ${data.ip || 'N/A'}</p>
+                            <p><b>Country:</b> ${data.country || 'N/A'}</p>
+                            <p><b>Region:</b> ${data.region || 'N/A'}</p>
+                            <p><b>City:</b> ${data.city || 'N/A'}</p>
+                            <p><b>Location:</b> ${data.loc || 'N/A'}</p>
+                            <p><b>Organization:</b> ${data.org || 'N/A'}</p>
+                            <p><b>Hostname:</b> ${data.hostname || 'N/A'}</p>
+                            <p><b>Timezone:</b> ${data.timezone || 'N/A'}</p>
+                            <p><b>ASN:</b> ${data.asn || 'N/A'}</p>
+                            <p><b>ISP:</b> ${data.isp || 'N/A'}</p>
+                        </div>
+                    `;
+                    document.getElementById("ipDetails").innerHTML = ipDetails;
+                } else {
+                    document.getElementById("ipDetails").innerHTML = `<p>Error fetching data for IP: ${ip}</p>`;
+                }
+            } catch (error) {
+                document.getElementById("ipDetails").innerHTML = `<p>Error fetching IP details. Please try again later.</p>`;
+            }
+        }
+
+        // Call the fetchIpDetails function as soon as the page is loaded
+        window.onload = fetchIpDetails;
+    </script>
+</body>
+</html>
