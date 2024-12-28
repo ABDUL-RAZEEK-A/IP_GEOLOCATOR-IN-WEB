@@ -1,0 +1,9 @@
+run the files by starting with 'index.html'
+by this i used the html ,css, js all together in the file so no confusion while handling ..........
+
+please work only for EDUCATIONAL PURPOSES not for any MALPRACTICE CLAIM.....
+
+
+all the best
+
+...
